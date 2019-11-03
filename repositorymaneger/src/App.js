@@ -6,10 +6,7 @@ import Repositorios  from './components/Repositorios'
 
 class App extends Component{
 
-  
-  state = {
-    prueba : [1,2,3,5]
-  }
+
   render(){
     return <div className="container m-3">   <Repositorios /> </div>
   }
