@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 
+
 class Repositorios extends Component {
     state = {
         repositorios:[],
@@ -22,9 +23,10 @@ class Repositorios extends Component {
       }
     }
 
-    setOnClick = m =>{
-      if(m.onClick == 'Value')
-      this.cargarRepositorioO();
+    setOnClick = (event, id) =>{
+      console.log(id);
+      localStorage.setItem("linkColaboradores", id);
+      window.location = "/colaboradores";
 
       
     }
@@ -57,12 +59,12 @@ class Repositorios extends Component {
                 <div className="input-group mb-3">
                 <input type="text" className="form-control" onKeyUp={this.onChange}  placeholder="Repository name" aria-label="Repository name" aria-describedby="button-addon2"></input>
                 <div className="input-group-append">
-               <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={()=>this.setOnClick}>Buscar</button>
+               <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={(evt)=>this.setOnClick(evt, elemento.contributors_url)}>Calaboradores</button>
               </div>
-              </div>
+              </div> 
               
                 {this.state.repositorios.map(elemento => 
-                   {     return <div className="col-md-4">
+                   {     return <div className="col-md-4" key={elemento.id}>
                    <div className="card mb-3 width-card" >
                    <div className="row no-gutters">
                      <div className="col-md-4">
@@ -77,6 +79,7 @@ class Repositorios extends Component {
                          <p className="card-text">{elemento.description}</p>
                          <p className="card-text"><a href={elemento.html_url}>{elemento.html_url}</a></p>
                          <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                        
                        </div>
                      </div>
                    </div>
@@ -94,3 +97,7 @@ class Repositorios extends Component {
 }
 
 export default Repositorios;
+
+
+
+
