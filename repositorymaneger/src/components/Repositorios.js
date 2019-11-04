@@ -23,12 +23,11 @@ class Repositorios extends Component {
       }
     }
 
-    setOnClick = (event, id) =>{
+    setOnClick = (event,id) => {
       console.log(id);
-      localStorage.setItem("linkColaboradores", id);
+      localStorage.setItem("linkColaboradores",id);
       window.location = "/colaboradores";
-
-      
+     
     }
 
     
@@ -59,9 +58,9 @@ class Repositorios extends Component {
         return (
         <div className="row">
                 <div className="input-group mb-3">
-                <input type="text" className="form-control" onKeyUp={this.onChange}  placeholder="Repository name" aria-label="Repository name" aria-describedby="button-addon2"></input>
+                <input type="text" className="form-control" autoComplete="false" onKeyUp={this.onChange}  placeholder="Repository name" aria-label="Repository name" aria-describedby="button-addon2"></input>
                 <div className="input-group-append">
-               <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={(evt)=>this.setOnClick(evt, elemento.contributors_url)}>Calaboradores</button>
+               <button className="btn btn-outline-secondary" type="button" id="button-addon2" onClick={this.setOnClick}><i className="fas fa-search"></i> Search</button>
               </div>
               </div> 
               
@@ -81,6 +80,7 @@ class Repositorios extends Component {
                          <p className="card-text">{elemento.description}</p>
                          <p className="card-text"><a href={elemento.html_url}>{elemento.html_url}</a></p>
                          <p className="card-text"><small className="text-muted">Last updated 3 mins ago</small></p>
+                         <button onClick={(evt) => this.setOnClick(evt,elemento.contributors_url)} >Colaboradores</button>
                         
                        </div>
                      </div>
