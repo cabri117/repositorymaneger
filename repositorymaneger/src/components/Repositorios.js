@@ -7,12 +7,12 @@ class Repositorios extends Component {
         repositorios:[],
         buscador:'js'
     }
-    async componentDidMount(){
+    async componentDidMount(){     // Funcion asincrona, donde llamamos la funcion cargar repositorio (similar al main)
         this.cargarRepositorio();         
 
     }
     
-    onKeyUp = e => {
+    onKeyUp = e => {               // Funcion asociada al evento que funciona cuando suelta una tecla
        
         this.setState({buscador:e.target.value})
         if(this.state.buscador.length <= 0)
@@ -21,7 +21,7 @@ class Repositorios extends Component {
           this.cargarRepositorio();
         }
     }
-    onClickSearch = e => {
+    onClickSearch = e => {        //Funcion que se dispara al darle click al boton buscar
        
       this.setState({buscador:e.target.value})
       if(this.state.buscador.length <= 0)
@@ -29,30 +29,30 @@ class Repositorios extends Component {
       this.cargarRepositorio();
       
   }
-    onClick = (event,id) => {
+    onClick = (event,id) => {    //Funcion que nos permite navegar a colaboradores
       console.log(id);
-      //alert(id);
+      if(localStorage != null){
       localStorage.setItem("linkColaboradores",id);
       window.location = "/colaboradores";
-      //storage= window.localStorage;
-      //storage.setItem("linkColaboradores",id);
+    }else{
+
+      alert("No tiene colaboradores");
+    }
     }
 
     async cargarRepositorio(){
+        
+            const url = "https://api.github.com/search/repositories?q="+this.state.buscador+"+in:full_name&type=Repositories&sort=score&order=desc&per_page=6"; //Buscar por el nombre del repositorio
+            console.log(url);
+            const headers = { "Accept":"application/vnd.github.cloak-preview" }
+            const response = await fetch(url,{ "method":"GET","headers":headers});
+            const result = await response.json();
   
-     const url = "https://api.github.com/search/repositories?q="+this.state.buscador+"+in:full_name&type=Repositories&sort=score&order=desc&per_page=6"; //Buscar por el nombre del repositorio
-     console.log(url);
-           
-     const headers = { "Accept":"application/vnd.github.cloak-preview" }
-     const response = await fetch(url,{ "method":"GET","headers":headers});
-     const result = await response.json();
-
-     if(result.items != null)
-     this.setState({repositorios:result.items});
-
-     else
-     this.setState({repositorios:[]});
-     console.log(result);
+            if(result.items != null)
+            this.setState({repositorios:result.items});
+            else
+            this.setState({repositorios:[]});
+            console.log(result);
            
     }
 
@@ -87,17 +87,17 @@ class Repositorios extends Component {
                 </div>
                 
                 {this.state.repositorios.map(elemento => 
-                   { return <div className="col-md-4" key={elemento.id} >
+                   {     return <div className="col-md-4" key={elemento.id} >
 
-              <div className="card text-center mb-3">
-                <div className="card-header"  data-tip="Nombre del repositorio">
-                <i className="far fa-folder"></i> {this.isEmpty(elemento.full_name)}
-              </div>
-              <div className="card-body">
-                 <span className="card-title">
-                 <div className="row">
-                    <div className="col-md-12 text-right"><i className="fas fa-question-circle" data-tip="" ></i></div>
-                    <div  className="col-md-5 text-left badge badge-success p-2"   data-tip="Cantidad de estrella">
+         <div className="card text-center mb-3">
+              <div className="card-header"  data-tip="Nombre del repositorio">
+              <i className="far fa-folder"></i> {this.isEmpty(elemento.full_name)}
+             </div>
+         <div className="card-body">
+            <span className="card-title">
+            <div className="row">
+                  <div className="col-md-12 text-right"><i className="fas fa-question-circle" data-tip="" ></i></div>
+                  <div  className="col-md-5 text-left badge badge-success p-2"   data-tip="Cantidad de estrella">
                       <div className="row">
                           <div className="col-md-4 text-center">
                                 <i className="fas fa-star"></i>
@@ -127,12 +127,12 @@ class Repositorios extends Component {
                     <hr />
                   </div>
             </div>
-               </span>
-               <h6 data-tip="Descripción del repositorio">Descripción</h6 >
-               <hr />
-               <p className="card-text text-left text-justify" >{this.isEmpty(elemento.description)}</p>
-           </div>
-        <div className="card-footer text-muted">
+    </span>
+    <h6 data-tip="Descripción del repositorio">Descripción</h6 >
+    <hr />
+    <p className="card-text text-left text-justify" >{this.isEmpty(elemento.description)}</p>
+  </div>
+  <div className="card-footer text-muted">
           <div className="row" >
                   <div className="col-md-6">
                       <button type="button" className="btn btn-link" onClick={(evt) => this.onClick(evt,elemento.contributors_url)} >
@@ -145,18 +145,18 @@ class Repositorios extends Component {
                   </a>
                   </div>
           </div> 
-        </div>
-      </div>
+  </div>
+</div>
 
                    
 
-  <ReactTooltip />
-  </div>
-   })
+<ReactTooltip />
+ </div>
+     })
                     
- }
+  }
 
-</div>
+ </div>
     )
 
   }
